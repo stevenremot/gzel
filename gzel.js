@@ -6,6 +6,10 @@ function toHexPart(val) {
   return val.toString(16).padStart(2, "0");
 }
 
+function toHexColor(r, g, b) {
+	return "#" + [r, g, b].map(toHexPart).join("")
+}
+
 class Renderer {
   constructor(target) {
     const canvas = document.createElement("canvas");
@@ -18,14 +22,23 @@ class Renderer {
 
   fill(r, g, b) {
     this.ctx.save();
-    this.ctx.fillStyle = "#" + [r, g, b].map(toHexPart).join("");
+    this.ctx.fillStyle = toHexColor(r, g, b);
     this.ctx.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     this.ctx.restore();
   }
 
+  drawPixel(x, y, r, g, b, a) {
+		this.ctx.save();
+    this.ctx.fillStyle = toHexColor(r, g, b);
+		this.ctx.globalAlpha = a / 255;
+    this.ctx.fillRect(x, y, 1, 1);
+		this.ctx.restore();
+  }
+
   exportAPI() {
     return {
-      graphics_fill: this.fill.bind(this)
+      graphics_fill: this.fill.bind(this),
+			graphics_draw_pixel: this.drawPixel.bind(this),
     };
   }
 }

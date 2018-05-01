@@ -1,0 +1,3 @@
+[*.js]
+indent_style = whitespace
+indent_size = 2
