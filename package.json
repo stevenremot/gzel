@@ -6,8 +6,8 @@
   "directories": {
     "example": "examples"
   },
-  "scripts": {
-      "website:build": "parcel build --public-url ./ website/index.html"
+    "scripts": {
+    "website:build": "parcel build --public-url ./ website/index.html"
   },
   "author": "",
   "license": "ISC",

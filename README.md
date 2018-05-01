@@ -2,12 +2,12 @@
 
 ## Description
 
-Gzel aims to provide framework for creating basic 2d games in
+Gzel aims to provide a framework for creating basic 2d games in
 webassembly. The design goals are:
 
 * defining games as self-contained webassembly files
-* be web-agnostic, so that a game can be run natively too
-* have a very simple API to make new implementations easy
+* being web-agnostic, so that a game can be run natively too
+* having a very simple API to make new implementations easily
 
 ## Documentation
 
