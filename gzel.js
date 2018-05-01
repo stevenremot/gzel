@@ -1,5 +1,5 @@
-const SCREEN_WIDTH = 240;
-const SCREEN_HEIGHT = 140;
+const SCREEN_WIDTH = 320;
+const SCREEN_HEIGHT = 240;
 
 // Graphics
 function toHexPart(val) {
@@ -7,11 +7,12 @@ function toHexPart(val) {
 }
 
 function toHexColor(r, g, b) {
-	return "#" + [r, g, b].map(toHexPart).join("")
+  return "#" + [r, g, b].map(toHexPart).join("");
 }
 
 class Renderer {
-  constructor(target) {
+  constructor(target, game) {
+    this.game = game;
     const canvas = document.createElement("canvas");
     canvas.width = SCREEN_WIDTH;
     canvas.height = SCREEN_HEIGHT;
@@ -28,17 +29,28 @@ class Renderer {
   }
 
   drawPixel(x, y, r, g, b, a) {
-		this.ctx.save();
+    this.ctx.save();
     this.ctx.fillStyle = toHexColor(r, g, b);
-		this.ctx.globalAlpha = a / 255;
+    this.ctx.globalAlpha = a / 255;
     this.ctx.fillRect(x, y, 1, 1);
-		this.ctx.restore();
+    this.ctx.restore();
+  }
+
+  drawPixels(x, y, w, h, pixelsPtr) {
+    const pixels = new Uint8ClampedArray(this.game.getMemory());
+    const data = new ImageData(
+      pixels.slice(pixelsPtr, pixelsPtr + w * h * 4),
+      w,
+      h
+    );
+    this.ctx.putImageData(data, x, y);
   }
 
   exportAPI() {
     return {
       graphics_fill: this.fill.bind(this),
-			graphics_draw_pixel: this.drawPixel.bind(this),
+      graphics_draw_pixel: this.drawPixel.bind(this),
+      graphics_draw_pixels: this.drawPixels.bind(this)
     };
   }
 }
@@ -49,10 +61,14 @@ const iterStep = 1000 / fps;
 
 export class Console {
   constructor(target) {
-    this.renderer = new Renderer(target);
+    this.renderer = new Renderer(target, this);
     this.cartridge = null;
     this.lastIterTime = null;
     this.timeCount = 0;
+  }
+
+  getMemory() {
+    return this.cartridge.instance.exports.memory.buffer;
   }
 
   exportAPI() {

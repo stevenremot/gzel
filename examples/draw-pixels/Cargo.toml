@@ -1,5 +1,5 @@
 [package]
-name = "fill-screen"
+name = "draw-pixels"
 version = "0.1.0"
 authors = ["Steven Rémot"]
 
