@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta charset="utf-8" />
+	<title>Gzel</title>
+    </head>
+    <body>
+	<h1>Gzel</h1>
+
+	<h2>Description</h2>
+
+	<p>
+	    Gzel aims to provide framework for creating basic 2d games in
+	    webassembly. The design goals are:
+
+	    <ul>
+		<li>defining games as self-contained webassembly files</li>
+		<li>be web-agnostic, so that a game can be run natively too</li>
+		<li>have a very simple API to make new implementations easy</li>
+	    </ul>
+	</p>
+
+	<h2>Example:</h2>
+
+	<div id="canvas"></div>
+	<script type="module">
+	 import { Console } from './gzel.js';
+	 const game = new Console("#canvas");
+	 game.load(
+	     './fill_screen.wasm'
+	 );
+	</script>
+    </body>
+</html>

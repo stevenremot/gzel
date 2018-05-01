@@ -5,6 +5,7 @@ pub unsafe extern fn init() {
 
 }
 
+#[allow(non_upper_case_globals)]
 static mut count: u32 = 0;
 
 #[no_mangle]
