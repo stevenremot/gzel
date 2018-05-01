@@ -1,0 +1,17 @@
+{
+  "name": "gzel",
+  "version": "0.1.0",
+  "description": "AA framework for writing simple 2d games in webassembly",
+  "main": "gzel.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^1.12.1"
+  }
+}

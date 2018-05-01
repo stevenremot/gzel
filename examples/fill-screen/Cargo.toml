@@ -1,0 +1,10 @@
+[package]
+name = "fill-screen"
+version = "0.1.0"
+authors = ["Steven Rémot <steven.remot@gmail.com>"]
+
+[dependencies]
+
+[lib]
+path = "main.rs"
+crate-type = ["cdylib"]
