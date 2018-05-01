@@ -1,0 +1,40 @@
+/* reset */
+html, body {
+    font-family: Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+h1, h2, p {
+    margin: 0;
+}
+
+/* layout */
+
+header, main {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+header {
+    background-color: black;
+    color: #eeeeee;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.octicon {
+    fill: #eeeeee;
+}
+
+p {
+    margin-bottom: 8px;
+}
+
+h2 {
+    margin-bottom: 8px;
+}
