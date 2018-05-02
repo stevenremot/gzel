@@ -55,6 +55,64 @@ class Renderer {
   }
 }
 
+// Inputs
+
+const KEYS = {
+	LEFT: 0,
+	RIGHT: 1,
+	UP: 2,
+	DOWN: 3,
+	START: 4,
+	A: 5,
+	B: 6,
+};
+
+const KEYBOARD_BINDINGS = {
+	'ArrowLeft': KEYS.LEFT,
+	'ArrowRight': KEYS.RIGHT,
+	'ArrowUp': KEYS.UP,
+	'ArrowDown': KEYS.DOWN,
+	'Enter': KEYS.START,
+	'Space': KEYS.A,
+	'Control': KEYS.B,
+}
+
+class Input {
+	constructor(game) {
+		this.game = game;
+	}
+
+	press(key) {
+		if (this.game.cartridge.instance.exports.on_key_press) {
+			this.game.cartridge.instance.exports.on_key_press(key);
+		}
+	}
+
+	release(key) {
+		if (this.game.cartridge.instance.exports.on_key_release) {
+			this.game.cartridge.instance.exports.on_key_release(key);
+		}
+	}
+
+	bindToKeyboard(targetNode) {
+		targetNode.addEventListener('keydown', evt => {
+			if (evt.key in KEYBOARD_BINDINGS) {
+				this.press(KEYBOARD_BINDINGS[evt.key]);
+			}
+		});
+
+		targetNode.addEventListener('keyup', evt => {
+			if (evt.key in KEYBOARD_BINDINGS) {
+				this.release(KEYBOARD_BINDINGS[evt.key]);
+			}
+		});
+	}
+
+	exportAPI() {
+		return {};
+	}
+}
+
 // Main API
 const fps = 60;
 const iterStep = 1000 / fps;
@@ -65,6 +123,7 @@ export class Console {
     this.cartridge = null;
     this.lastIterTime = null;
     this.timeCount = 0;
+		this.input = new Input(this);
   }
 
   getMemory() {
@@ -79,7 +138,8 @@ export class Console {
         },
         sinf: Math.sin
       },
-      this.renderer.exportAPI()
+      this.renderer.exportAPI(),
+			this.input.exportAPI(),
     );
   }
 

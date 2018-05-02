@@ -6,7 +6,7 @@
   "directories": {
     "example": "examples"
   },
-    "scripts": {
+  "scripts": {
     "website:build": "parcel build --public-url ./ website/index.html"
   },
   "author": "",
