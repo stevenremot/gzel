@@ -58,59 +58,68 @@ class Renderer {
 // Inputs
 
 const KEYS = {
-	LEFT: 0,
-	RIGHT: 1,
-	UP: 2,
-	DOWN: 3,
-	START: 4,
-	A: 5,
-	B: 6,
+  LEFT: 0,
+  RIGHT: 1,
+  UP: 2,
+  DOWN: 3,
+  START: 4,
+  A: 5,
+  B: 6
 };
 
 const KEYBOARD_BINDINGS = {
-	'ArrowLeft': KEYS.LEFT,
-	'ArrowRight': KEYS.RIGHT,
-	'ArrowUp': KEYS.UP,
-	'ArrowDown': KEYS.DOWN,
-	'Enter': KEYS.START,
-	'Space': KEYS.A,
-	'Control': KEYS.B,
-}
+  ArrowLeft: KEYS.LEFT,
+  ArrowRight: KEYS.RIGHT,
+  ArrowUp: KEYS.UP,
+  ArrowDown: KEYS.DOWN,
+  Enter: KEYS.START,
+  Space: KEYS.A,
+  Control: KEYS.B
+};
 
 class Input {
-	constructor(game) {
-		this.game = game;
-	}
+  constructor(game) {
+    this.game = game;
+    this.pressedKeys = new Set();
+  }
 
-	press(key) {
-		if (this.game.cartridge.instance.exports.on_key_press) {
-			this.game.cartridge.instance.exports.on_key_press(key);
-		}
-	}
+  press(key) {
+    if (
+      this.game.cartridge.instance.exports.on_key_press &&
+      !this.pressedKeys.has(key)
+    ) {
+      this.game.cartridge.instance.exports.on_key_press(key);
+      this.pressedKeys.add(key);
+    }
+  }
 
-	release(key) {
-		if (this.game.cartridge.instance.exports.on_key_release) {
-			this.game.cartridge.instance.exports.on_key_release(key);
-		}
-	}
+  release(key) {
+    if (
+      this.game.cartridge.instance.exports.on_key_release &&
+      this.pressedKeys.has(key)
+    ) {
+      this.game.cartridge.instance.exports.on_key_release(key);
+      this.pressedKeys.delete(key);
+    }
+  }
 
-	bindToKeyboard(targetNode) {
-		targetNode.addEventListener('keydown', evt => {
-			if (evt.key in KEYBOARD_BINDINGS) {
-				this.press(KEYBOARD_BINDINGS[evt.key]);
-			}
-		});
+  bindToKeyboard(targetNode) {
+    targetNode.addEventListener("keydown", evt => {
+      if (evt.key in KEYBOARD_BINDINGS) {
+        this.press(KEYBOARD_BINDINGS[evt.key]);
+      }
+    });
 
-		targetNode.addEventListener('keyup', evt => {
-			if (evt.key in KEYBOARD_BINDINGS) {
-				this.release(KEYBOARD_BINDINGS[evt.key]);
-			}
-		});
-	}
+    targetNode.addEventListener("keyup", evt => {
+      if (evt.key in KEYBOARD_BINDINGS) {
+        this.release(KEYBOARD_BINDINGS[evt.key]);
+      }
+    });
+  }
 
-	exportAPI() {
-		return {};
-	}
+  exportAPI() {
+    return {};
+  }
 }
 
 // Main API
@@ -123,7 +132,7 @@ export class Console {
     this.cartridge = null;
     this.lastIterTime = null;
     this.timeCount = 0;
-		this.input = new Input(this);
+    this.input = new Input(this);
   }
 
   getMemory() {
@@ -136,10 +145,11 @@ export class Console {
         debug_log(r) {
           console.log(r);
         },
+        cosf: Math.cos,
         sinf: Math.sin
       },
       this.renderer.exportAPI(),
-			this.input.exportAPI(),
+      this.input.exportAPI()
     );
   }
 
