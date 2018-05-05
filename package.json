@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "website:build": "parcel build --public-url ./ website/index.html"
+    "website:build": "parcel build --public-url ./ -d docs/ website/index.html"
   },
   "author": "",
   "license": "ISC",
