@@ -1,6 +1,7 @@
 import { Console } from '../gzel.js';
 
 const game = new Console("#canvas");
+game.input.bindToKeyboard(document.body);
 game.load(
-    './fill_screen.wasm'
+    './breakout.wasm'
 );
