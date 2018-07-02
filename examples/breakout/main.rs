@@ -1,3 +1,6 @@
+use std::ffi::CString;
+use std::os::raw::c_char;
+
 mod gzel;
 mod model;
 mod graphics;
@@ -5,6 +8,31 @@ mod input;
 
 #[allow(non_upper_case_globals)]
 static mut game: Option<model::Game> = None;
+
+static NAME: &'static str = env!("CARGO_PKG_NAME");
+static VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
+#[no_mangle]
+pub extern fn get_name() -> *mut c_char {
+    let s = CString::new(NAME).unwrap();
+    s.into_raw()
+}
+
+#[no_mangle]
+pub extern fn get_name_len() -> usize {
+    NAME.len()
+}
+
+#[no_mangle]
+pub extern fn get_version() -> *mut c_char {
+    let s = CString::new(VERSION).unwrap();
+    s.into_raw()
+}
+
+#[no_mangle]
+pub extern fn get_version_len() -> usize {
+    VERSION.len()
+}
 
 #[no_mangle]
 pub unsafe extern fn init() {

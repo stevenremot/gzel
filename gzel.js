@@ -160,7 +160,8 @@ export class Console {
       .then(cartridge => {
         this.cartridge = cartridge;
         this.start();
-      });
+      })
+      .then(() => this);
   }
 
   start() {
@@ -185,5 +186,26 @@ export class Console {
       this.lastIterTime = time;
       this.loop();
     });
+  }
+
+  decodeString(offset, length) {
+    const mem = new Uint8Array(this.getMemory(), offset, length);
+    const decoder = new TextDecoder("utf-8");
+
+    return decoder.decode(mem);
+  }
+
+  getName() {
+    const namePointer = this.cartridge.instance.exports.get_name();
+    const nameLength = this.cartridge.instance.exports.get_name_len();
+
+    return this.decodeString(namePointer, nameLength);
+  }
+
+  getVersion() {
+    const versionPointer = this.cartridge.instance.exports.get_version();
+    const versionLength = this.cartridge.instance.exports.get_version_len();
+
+    return this.decodeString(versionPointer, versionLength);
   }
 }

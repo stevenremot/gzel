@@ -1,6 +1,34 @@
+use std::ffi::CString;
+use std::os::raw::c_char;
+
 extern {
     fn graphics_fill(r: u16, g: u16, b: u16);
     fn graphics_draw_pixels(x: u16, y: u16, w: u16, h: u16, pixels: *const u8);
+}
+
+static NAME: &'static str = env!("CARGO_PKG_NAME");
+static VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
+#[no_mangle]
+pub extern fn get_name() -> *mut c_char {
+    let s = CString::new(NAME).unwrap();
+    s.into_raw()
+}
+
+#[no_mangle]
+pub extern fn get_name_len() -> usize {
+    NAME.len()
+}
+
+#[no_mangle]
+pub extern fn get_version() -> *mut c_char {
+    let s = CString::new(VERSION).unwrap();
+    s.into_raw()
+}
+
+#[no_mangle]
+pub extern fn get_version_len() -> usize {
+    VERSION.len()
 }
 
 #[no_mangle]
