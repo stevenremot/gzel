@@ -19,6 +19,17 @@ class Renderer {
     document.querySelector(target).appendChild(canvas);
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
+
+    this.drawCanvas = document.createElement("canvas");
+    this.drawContext = this.drawCanvas.getContext("2d");
+  }
+
+  setSize(width, height) {
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.ctx = this.canvas.getContext("2d");
+    this.ctx.scale(width / SCREEN_WIDTH, height / SCREEN_HEIGHT);
+    this.ctx.save();
   }
 
   fill(r, g, b) {
@@ -43,7 +54,11 @@ class Renderer {
       w,
       h
     );
-    this.ctx.putImageData(data, x, y);
+    this.drawCanvas.width = data.width;
+    this.drawCanvas.height = data.height;
+
+    this.drawContext.putImageData(data, 0, 0);
+    this.ctx.drawImage(this.drawCanvas, x, y);
   }
 
   exportAPI() {
@@ -85,6 +100,7 @@ class Input {
 
   press(key) {
     if (
+      this.game.cartridge &&
       this.game.cartridge.instance.exports.on_key_press &&
       !this.pressedKeys.has(key)
     ) {
@@ -95,6 +111,7 @@ class Input {
 
   release(key) {
     if (
+      this.game.cartridge &&
       this.game.cartridge.instance.exports.on_key_release &&
       this.pressedKeys.has(key)
     ) {
