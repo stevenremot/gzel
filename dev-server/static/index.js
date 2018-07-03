@@ -1,4 +1,4 @@
-import { Console } from "../../gzel.js";
+import { Console } from "gzel-core/gzel.js";
 
 const game = new Console("#canvas");
 game.input.bindToKeyboard(document.body);
